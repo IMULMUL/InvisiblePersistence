@@ -1,0 +1,61 @@
+[package]
+name = "liquidation-bot"
+version = "0.1.0"
+edition = "2021"
+authors = ["Your Name <your.email@example.com>"]
+description = "Automated liquidation bot for Solana lending protocols"
+license = "MIT"
+
+[dependencies]
+# Solana
+solana-client = "1.18"
+solana-sdk = "1.18"
+solana-transaction-status = "1.18"
+anchor-client = "0.29"
+
+# Async runtime
+tokio = { version = "1.35", features = ["full"] }
+futures = "0.3"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+borsh = "0.10"
+
+# HTTP client
+reqwest = { version = "0.11", features = ["json"] }
+
+# Database
+redis = { version = "0.24", features = ["tokio-comp", "connection-manager"] }
+sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "postgres"] }
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Utilities
+anyhow = "1.0"
+thiserror = "1.0"
+dotenv = "0.15"
+clap = { version = "4.4", features = ["derive"] }
+chrono = "0.4"
+bs58 = "0.5"
+
+# Math and decimals
+rust_decimal = "1.33"
+num-traits = "0.2"
+
+# Price feeds
+pyth-sdk-solana = "0.10"
+
+[dev-dependencies]
+mockito = "1.2"
+tokio-test = "0.4"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+

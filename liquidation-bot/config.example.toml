@@ -1,0 +1,45 @@
+# Liquidation Bot Configuration Example
+# Copy this to config.toml and customize
+
+[rpc]
+http_url = "https://api.mainnet-beta.solana.com"
+ws_url = "wss://api.mainnet-beta.solana.com"
+commitment = "confirmed"
+timeout_seconds = 30
+
+[wallet]
+keypair_path = "~/.config/solana/id.json"
+max_position_size = 10.0  # Max SOL per liquidation
+
+[protocols.solend]
+enabled = true
+program_id = "So1endDq2YkqhipRh3WViPa8hdiSpxWy6z3Z6tMCpAo"
+min_profit_usd = 10.0
+
+[protocols.mango]
+enabled = true
+program_id = "mv3ekLzLbnVPNxjSKvqBpU3ZeZXPQdEC3bp5MDEBG68"
+min_profit_usd = 10.0
+
+[protocols.port]
+enabled = true
+program_id = "Port7uDYB3wk6GJAw4KT1WpTeMtSu9bTcChBHkX2LfR"
+min_profit_usd = 10.0
+
+[protocols.kamino]
+enabled = true
+program_id = "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD"
+min_profit_usd = 10.0
+
+[strategy]
+liquidation_threshold = 1.0    # Health factor < 1.0 = liquidatable
+min_profit_sol = 0.01          # Minimum profit to execute
+max_slippage = 2.0             # Max slippage percentage
+priority_fee = 20000           # Priority fee in lamports
+scan_interval_seconds = 10     # How often to scan for opportunities
+
+[risk]
+max_concurrent_liquidations = 5  # Max simultaneous liquidations
+max_liquidation_size = 50.0      # Max SOL per liquidation
+circuit_breaker_failures = 10    # Pause after N failures
+

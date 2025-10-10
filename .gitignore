@@ -1,0 +1,49 @@
+# Rust
+/target/
+**/target/
+Cargo.lock
+**/*.rs.bk
+*.pdb
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment & Config
+.env
+*.env
+config.toml
+**/config.toml
+*.json
+!package.json
+
+# Wallets & Keys (NEVER COMMIT!)
+*.json
+!config.example.toml
+!Cargo.toml
+!package.json
+wallet*.json
+keypair*.json
+id.json
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite
+
+# Build artifacts
+*.wasm
+*.so
+*.dll
+*.exe
+

@@ -1,0 +1,38 @@
+[workspace]
+members = [
+    "sandwich-bot",
+    "liquidation-bot",
+    "nft-mint-bot",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["Your Name <your.email@example.com>"]
+license = "MIT"
+repository = "https://github.com/yourusername/solana-trading-bots"
+
+[workspace.dependencies]
+# Shared dependencies across all bots
+solana-client = "1.18"
+solana-sdk = "1.18"
+solana-transaction-status = "1.18"
+tokio = { version = "1.35", features = ["full"] }
+anyhow = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[profile.dev]
+opt-level = 0
+debug = true
+
