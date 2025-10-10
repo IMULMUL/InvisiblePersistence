@@ -162,22 +162,6 @@ Need a custom bot or want to modify existing ones? We offer:
 - ✅ 24/7 monitoring and maintenance
 - ✅ White-label solutions
 
-## 💬 Support & Contact
-
-- **Documentation:** See individual bot folders
-- **Issues:** GitHub Issues
-- **Custom Development:** [Contact Us]
-
-## ⚖️ Legal Disclaimer
-
-**IMPORTANT:** These bots are provided for educational purposes. Trading bots involve financial risk:
-
-- ⚠️ You may lose your entire investment
-- ⚠️ MEV strategies may be considered controversial
-- ⚠️ Check local regulations before use
-- ⚠️ Use at your own risk
-- ⚠️ No guarantee of profits
-
 **Sandwich trading and MEV extraction may be considered unethical by some community members. Use responsibly.**
 
 ## 📜 License
