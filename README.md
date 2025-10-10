@@ -103,7 +103,7 @@ solana --version
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/solana-trading-bots
+git clone https://github.com/devstorm2576916/solana-liquidation-sandwich-nft-bot.git
 cd solana-trading-bots
 
 # Build all bots
