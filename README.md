@@ -189,6 +189,7 @@ Choose your bot and start earning:
 4. Start the bot and monitor profits
 
 **👉 [Contact me on Telegram](https://t.me/devstorm2576916)**
+
 **Ready to dominate Solana trading? Let's build something amazing together!**
 
 ---
