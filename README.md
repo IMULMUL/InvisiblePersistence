@@ -2,7 +2,7 @@
 
 [![Website](https://img.shields.io/badge/Live%20Site-Click%20Here-blue)](https://ethereum-mev-tradingbot.vercel.app)
 
-**👉 [Contact me on Telegram](https://t.me/devstorm2576916)**
+**👉 [Contact me on Telegram](https://t.me/butter991011)**
 ## 💎 Premium Solana Bot Services
 
 Welcome to the most comprehensive and professional suite of Solana trading bots built with Rust. Our bots are designed for maximum performance, reliability, and profitability in the fast-paced Solana ecosystem.
@@ -71,7 +71,7 @@ solana-trading-bots/
 ├── ROADMAP.md         # Development roadmap
 └── README.md          # This file
 ```
-**👉 [Contact me on Telegram](https://t.me/devstorm2576916)**
+**👉 [Contact me on Telegram](https://t.me/butter991011)**
 ## 🛠️ Technology Stack
 
 - **Language:** Rust (for maximum performance and safety)
@@ -336,7 +336,7 @@ Choose your bot and start earning:
 3. Configure your environment
 4. Start the bot and monitor profits
 
-**👉 [Contact me on Telegram](https://t.me/devstorm2576916)**
+**👉 [Contact me on Telegram](https://t.me/butter991011)**
 
 **Ready to dominate Solana trading? Let's build something amazing together!**
 
