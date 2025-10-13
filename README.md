@@ -772,7 +772,7 @@ This software is provided for **educational and research purposes** regarding Et
 [![Star History Chart](https://api.star-history.com/svg?repos=butter991011/ethereum-mev-bot&type=Date)](https://star-history.com/#butter991011/ethereum-mev-bot&Date)
 
 ---
-**👉 [Contact me on Telegram](https://t.me/butter991011)**
 **Ethereum Mainnet** • **Solidity 0.8.19** • **Aave V3** • **Uniswap V2/V3** • **SushiSwap**
 
 </div>
+**👉 [Contact me on Telegram](https://t.me/butter991011)**
