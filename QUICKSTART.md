@@ -19,7 +19,7 @@ Get your Ethereum MEV Arbitrage Bot running in 10 minutes!
 
 ```bash
 # Clone repository
-git clone https://github.com/butter991011/ethereum-mev-bot.git
+git clone https://github.com/devstorm2576916/ethereum-mev-bot.git
 cd ethereum-mev-bot
 
 # Install dependencies
@@ -185,7 +185,7 @@ node -e "require('ethers').providers.JsonRpcProvider('YOUR_RPC').getBalance('YOU
 
 - 💬 **Telegram**: @YourTelegramUsername
 - 📧 **Email**: support@yourdomain.com
-- 🐛 **Issues**: [GitHub Issues](https://github.com/butter991011/ethereum-mev-bot/issues)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/devstorm2576916/ethereum-mev-bot/issues)
 
 ---
 

@@ -289,7 +289,7 @@ npm start
 
 ### Other Channels
 - **Email**: support@yourdomain.com
-- **GitHub**: github.com/butter991011/ethereum-mev-bot
+- **GitHub**: github.com/devstorm2576916/ethereum-mev-bot
 - **Twitter**: @YourTwitterHandle
 
 ---

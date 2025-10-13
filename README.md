@@ -16,7 +16,7 @@
 
 ---
 
-**👉 [Contact me on Telegram](https://t.me/butter991011)**
+**👉 [Contact me on Telegram](https://t.me/devstorm2576916)**
 
 ### 💎 Why This Bot?
 
@@ -304,7 +304,7 @@ Net Profit: ~$60-80 per trade
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/butter991011/ethereum-mev-bot.git
+git clone https://github.com/devstorm2576916/ethereum-mev-bot.git
 cd ethereum-mev-bot
 
 # 2. Install dependencies
@@ -369,7 +369,7 @@ pm2 save
 pm2 startup
 ```
 
-**👉 [Contact me on Telegram](https://t.me/butter991011)**
+**👉 [Contact me on Telegram](https://t.me/devstorm2576916)**
 
 **✅ That's it! Your Ethereum arbitrage bot is now running!**
 
@@ -423,7 +423,7 @@ tokens: {
 
 #### Direct Contact
 
-- 💬 **Telegram**: [@butter991011](https://t.me/butter991011)
+- 💬 **Telegram**: [@devstorm2576916](https://t.me/devstorm2576916)
 
 ### 💰 Payment & Donations
 
@@ -707,7 +707,7 @@ We welcome contributions to improve the Ethereum MEV bot!
 
 ```bash
 # Fork and clone the repo
-git clone https://github.com/butter991011/ethereum-mev-bot.git
+git clone https://github.com/devstorm2576916/ethereum-mev-bot.git
 
 # Create a branch
 git checkout -b feature/your-ethereum-feature
@@ -768,10 +768,10 @@ This software is provided for **educational and research purposes** regarding Et
 
 ### 🌟 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=butter991011/ethereum-mev-bot&type=Date)](https://star-history.com/#butter991011/ethereum-mev-bot&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=devstorm2576916/ethereum-mev-bot&type=Date)](https://star-history.com/#devstorm2576916/ethereum-mev-bot&Date)
 
 ---
 **Ethereum Mainnet** • **Solidity 0.8.19** • **Aave V3** • **Uniswap V2/V3** • **SushiSwap**
 
 </div>
-**👉 [Contact me on Telegram](https://t.me/butter991011)**
+**👉 [Contact me on Telegram](https://t.me/devstorm2576916)**
