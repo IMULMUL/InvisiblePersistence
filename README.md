@@ -767,7 +767,7 @@ This software is provided for **educational and research purposes** regarding Et
 
 ### 🌟 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/ethereum-mev-bot&type=Date)](https://star-history.com/#yourusername/ethereum-mev-bot&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=butter991011/ethereum-mev-bot&type=Date)](https://star-history.com/#butter991011/ethereum-mev-bot&Date)
 
 ---
 
