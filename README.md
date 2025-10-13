@@ -706,7 +706,7 @@ We welcome contributions to improve the Ethereum MEV bot!
 
 ```bash
 # Fork and clone the repo
-git clone https://github.com/yourusername/ethereum-mev-bot.git
+git clone https://github.com/butter991011/ethereum-mev-bot.git
 
 # Create a branch
 git checkout -b feature/your-ethereum-feature

@@ -38,7 +38,7 @@
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/ethereum-mev-bot.git
+git clone https://github.com/butter991011/ethereum-mev-bot.git
 cd ethereum-mev-bot
 ```
 
@@ -587,8 +587,8 @@ After successful setup:
 
 - 📧 Email: support@yourdomain.com
 - 💬 Telegram: @YourTelegramUsername
-- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/ethereum-mev-bot/issues)
-- 📖 Documentation: [Full Docs](https://github.com/yourusername/ethereum-mev-bot)
+- 🐛 Issues: [GitHub Issues](https://github.com/butter991011/ethereum-mev-bot/issues)
+- 📖 Documentation: [Full Docs](https://github.com/butter991011/ethereum-mev-bot)
 
 ---
 
