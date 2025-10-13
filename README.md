@@ -764,6 +764,8 @@ This software is provided for **educational and research purposes** regarding Et
 
 ---
 
+**👉 [Contact me on Telegram](https://t.me/devstorm2576916)**
+
 <div align="center">
 
 ### 🌟 Star History
@@ -772,6 +774,4 @@ This software is provided for **educational and research purposes** regarding Et
 
 ---
 **Ethereum Mainnet** • **Solidity 0.8.19** • **Aave V3** • **Uniswap V2/V3** • **SushiSwap**
-
 </div>
-**👉 [Contact me on Telegram](https://t.me/devstorm2576916)**
