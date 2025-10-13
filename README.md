@@ -771,12 +771,6 @@ This software is provided for **educational and research purposes** regarding Et
 
 ---
 
-**Made with ❤️ for the Ethereum Community**
-
-**[⬆ Back to Top](#-ethereum-mev-arbitrage-bot)**
-
----
-
 **Ethereum Mainnet** • **Solidity 0.8.19** • **Aave V3** • **Uniswap V2/V3** • **SushiSwap**
 
 </div>
