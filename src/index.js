@@ -1,8 +1,8 @@
 /**
- * Ethereum MEV Arbitrage Bot - Main Entry Point
+ * MEV Arbitrage Bot - Main Entry Point
  * 
  * This bot monitors multiple DEXes for arbitrage opportunities and executes
- * profitable trades using flashloans from Aave.
+ * profitable trades using flashloans. Supports Ethereum and BNB Chain.
  */
 
 require('dotenv').config();
@@ -16,8 +16,12 @@ const config = require('./config/config');
  */
 async function main() {
     try {
-        logger.info('🚀 Starting Ethereum MEV Arbitrage Bot...');
-        logger.info(`📡 Network: ${config.network.chainId === 1 ? 'Mainnet' : 'Testnet'}`);
+        const chainName = config.chain.name;
+        const networkType = config.chain.isTestnet ? 'Testnet' : 'Mainnet';
+        const nativeSymbol = config.chain.nativeCurrency.symbol;
+        
+        logger.info(`🚀 Starting ${chainName} MEV Arbitrage Bot...`);
+        logger.info(`📡 Chain: ${chainName} ${networkType} (Chain ID: ${config.network.chainId})`);
         logger.info(`💼 Wallet: ${config.wallet.address}`);
         
         // Create provider
@@ -28,7 +32,8 @@ async function main() {
         // Create wallet
         const wallet = new ethers.Wallet(config.wallet.privateKey, provider);
         
-        logger.info(`💰 Wallet Balance: ${ethers.utils.formatEther(await wallet.getBalance())} ETH`);
+        const balance = await wallet.getBalance();
+        logger.info(`💰 Wallet Balance: ${ethers.utils.formatEther(balance)} ${nativeSymbol}`);
         
         // Initialize bot
         const bot = new ArbitrageBot(wallet, provider, config);
@@ -36,7 +41,7 @@ async function main() {
         // Start monitoring
         await bot.start();
         
-        logger.info('✅ Bot is running and monitoring for opportunities...');
+        logger.info(`✅ Bot is running and monitoring for opportunities on ${chainName}...`);
         
         // Handle graceful shutdown
         process.on('SIGINT', async () => {

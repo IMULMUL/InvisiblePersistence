@@ -71,10 +71,12 @@ class ArbitrageBot {
         this.schedulePeriodicTasks();
         
         // Send startup notification
+        const nativeSymbol = this.config.chain.nativeCurrency.symbol;
         await this.telegramNotifier.sendMessage(
-            '🚀 MEV Arbitrage Bot Started!\n' +
+            `🚀 MEV Arbitrage Bot Started!\n` +
+            `Chain: ${this.config.chain.name}\n` +
             `Network: ${this.config.network.chainId}\n` +
-            `Min Profit: ${this.config.bot.minProfitThreshold} ETH`
+            `Min Profit: ${this.config.bot.minProfitThreshold} ${nativeSymbol}`
         );
     }
     
@@ -240,12 +242,15 @@ class ArbitrageBot {
                 );
                 
                 // Send notification
+                const nativeSymbol = this.config.chain.nativeCurrency.symbol;
+                const blockExplorer = this.config.chain.blockExplorer;
                 await this.telegramNotifier.sendMessage(
                     `✅ Successful Arbitrage!\n` +
+                    `Chain: ${this.config.chain.name}\n` +
                     `Token: ${opportunity.token}\n` +
-                    `Profit: ${ethers.utils.formatEther(profit)} ETH\n` +
-                    `Gas: ${ethers.utils.formatEther(gasSpent)} ETH\n` +
-                    `Tx: ${tx.hash}`
+                    `Profit: ${ethers.utils.formatEther(profit)} ${nativeSymbol}\n` +
+                    `Gas: ${ethers.utils.formatEther(gasSpent)} ${nativeSymbol}\n` +
+                    `Tx: ${blockExplorer}/tx/${tx.hash}`
                 );
                 
                 // Store trade
@@ -295,11 +300,32 @@ class ArbitrageBot {
      * Get router addresses for DEXes
      */
     getRouterAddresses(opportunity) {
-        const dexConfig = this.config.dexes;
+        // Try to get from full DEX config first
+        const dexesFull = this.config.dexesFull || {};
+        const buyDex = dexesFull[opportunity.buyDex];
+        const sellDex = dexesFull[opportunity.sellDex];
+        
+        let buyRouter, sellRouter;
+        
+        if (buyDex && buyDex.router) {
+            buyRouter = buyDex.router;
+        } else {
+            // Fallback to flattened config
+            const routerKey = `${opportunity.buyDex}Router`;
+            buyRouter = this.config.dexes[routerKey] || this.config.dexes[opportunity.buyDex];
+        }
+        
+        if (sellDex && sellDex.router) {
+            sellRouter = sellDex.router;
+        } else {
+            // Fallback to flattened config
+            const routerKey = `${opportunity.sellDex}Router`;
+            sellRouter = this.config.dexes[routerKey] || this.config.dexes[opportunity.sellDex];
+        }
         
         return {
-            buyRouter: dexConfig[opportunity.buyDex],
-            sellRouter: dexConfig[opportunity.sellDex]
+            buyRouter: buyRouter,
+            sellRouter: sellRouter
         };
     }
     
@@ -307,9 +333,10 @@ class ArbitrageBot {
      * Encode parameters for flashloan callback
      */
     encodeArbitrageParams(opportunity, routers) {
+        const wrappedNative = this.config.tokens.wrappedNative || this.config.tokens.weth || this.config.tokens.wbnb;
         const path = [
             opportunity.token,
-            this.config.tokens.weth,
+            wrappedNative,
             opportunity.token
         ];
         
@@ -318,7 +345,25 @@ class ArbitrageBot {
             routers.sellRouter
         ];
         
-        const fees = [3000, 3000]; // 0.3% fee tier for Uniswap V3
+        // Determine fee tiers based on DEX configuration
+        const dexesFull = this.config.dexesFull || {};
+        const buyDex = dexesFull[opportunity.buyDex];
+        const sellDex = dexesFull[opportunity.sellDex];
+        
+        // Default to 0.3% (3000) for Uniswap V3, but use chain-specific defaults
+        let buyFee = 3000;
+        let sellFee = 3000;
+        
+        // Convert fee percentage to fee tier
+        // 0.05% = 500, 0.2% = 2000, 0.25% = 2500, 0.3% = 3000, 1% = 10000
+        if (buyDex && buyDex.fee) {
+            buyFee = Math.round(buyDex.fee * 10000);
+        }
+        if (sellDex && sellDex.fee) {
+            sellFee = Math.round(sellDex.fee * 10000);
+        }
+        
+        const fees = [buyFee, sellFee];
         
         return ethers.utils.defaultAbiCoder.encode(
             ['address[]', 'address[]', 'uint24[]', 'bool'],
@@ -408,16 +453,18 @@ class ArbitrageBot {
      * Get stats message
      */
     getStatsMessage() {
+        const nativeSymbol = this.config.chain.nativeCurrency.symbol;
         return `
+Chain: ${this.config.chain.name}
 Opportunities Found: ${this.stats.totalOpportunities}
 Trades Executed: ${this.stats.executedTrades}
 Successful: ${this.stats.successfulTrades}
 Failed: ${this.stats.failedTrades}
-Total Profit: ${ethers.utils.formatEther(this.stats.totalProfit.toFixed())} ETH
-Total Gas: ${ethers.utils.formatEther(this.stats.totalGasSpent.toFixed())} ETH
+Total Profit: ${ethers.utils.formatEther(this.stats.totalProfit.toFixed())} ${nativeSymbol}
+Total Gas: ${ethers.utils.formatEther(this.stats.totalGasSpent.toFixed())} ${nativeSymbol}
 Net Profit: ${ethers.utils.formatEther(
             this.stats.totalProfit.minus(this.stats.totalGasSpent).toFixed()
-        )} ETH
+        )} ${nativeSymbol}
         `.trim();
     }
 }

@@ -1,15 +1,55 @@
 /**
  * Configuration file for MEV Arbitrage Bot
+ * Supports multiple chains: Ethereum and BNB Chain
  */
 
 require('dotenv').config();
+const { getChainConfig } = require('./chains');
+
+// Get chain from environment variable (default: ethereum)
+const chainName = (process.env.CHAIN || 'ethereum').toLowerCase();
+const isTestnet = process.env.NETWORK === 'testnet' || process.env.TESTNET === 'true';
+
+// Get chain configuration
+let chainConfig;
+try {
+    chainConfig = getChainConfig(chainName);
+} catch (error) {
+    console.error(`Error: ${error.message}`);
+    console.error(`Supported chains: ethereum, bnb`);
+    process.exit(1);
+}
+
+// Determine which chain ID and RPC URLs to use
+const chainId = isTestnet ? chainConfig.testnetChainId : chainConfig.chainId;
+const rpcUrl = isTestnet ? (chainConfig.testnetRpcUrl || chainConfig.rpcUrl) : chainConfig.rpcUrl;
+const wssUrl = isTestnet ? (chainConfig.testnetWssUrl || chainConfig.wssUrl) : chainConfig.wssUrl;
+
+// Build DEX configuration object (flattened for backward compatibility)
+const dexes = {};
+Object.keys(chainConfig.dexes).forEach(key => {
+    const dex = chainConfig.dexes[key];
+    if (dex.router) dexes[`${key}Router`] = dex.router;
+    if (dex.factory) dexes[`${key}Factory`] = dex.factory;
+    if (dex.quoter) dexes[`${key}Quoter`] = dex.quoter;
+});
 
 module.exports = {
+    // Chain information
+    chain: {
+        name: chainConfig.name,
+        key: chainConfig.key || chainName,
+        chainId: parseInt(process.env.CHAIN_ID) || chainId,
+        isTestnet: isTestnet,
+        nativeCurrency: chainConfig.nativeCurrency,
+        blockExplorer: chainConfig.blockExplorer
+    },
+    
     // Network configuration
     network: {
-        rpcUrl: process.env.ETHEREUM_RPC_URL,
-        wssUrl: process.env.ETHEREUM_WSS_URL,
-        chainId: parseInt(process.env.CHAIN_ID) || 1
+        rpcUrl: process.env.RPC_URL || rpcUrl,
+        wssUrl: process.env.WSS_URL || wssUrl,
+        chainId: parseInt(process.env.CHAIN_ID) || chainId
     },
     
     // Wallet configuration
@@ -21,41 +61,36 @@ module.exports = {
     // Contract addresses
     contracts: {
         arbitrageContract: process.env.ARBITRAGE_CONTRACT_ADDRESS,
-        aaveLendingPool: process.env.AAVE_LENDING_POOL || '0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9'
+        flashloanProvider: process.env.FLASHLOAN_PROVIDER || chainConfig.flashloanProvider.address,
+        flashloanProviderName: chainConfig.flashloanProvider.name,
+        flashloanFee: chainConfig.flashloanProvider.fee
     },
     
-    // DEX configuration
-    dexes: {
-        uniswapV2Router: process.env.UNISWAP_V2_ROUTER || '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
-        uniswapV2Factory: '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f',
-        uniswapV3Router: process.env.UNISWAP_V3_ROUTER || '0xE592427A0AEce92De3Edee1F18E0157C05861564',
-        uniswapV3Quoter: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
-        sushiswapRouter: process.env.SUSHISWAP_ROUTER || '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F',
-        sushiswapFactory: '0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac'
-    },
+    // DEX configuration (flattened for backward compatibility)
+    dexes: dexes,
+    
+    // Full DEX configuration (with metadata)
+    dexesFull: chainConfig.dexes,
     
     // Token configuration
     tokens: {
-        weth: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-        usdc: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-        usdt: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-        dai: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-        watchlist: [
-            '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', // WETH
-            '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', // USDC
-            '0x6B175474E89094C44Da98b954EedeAC495271d0F', // DAI
-            '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', // WBTC
-            '0x514910771AF9Ca656af840dff83E8264EcF986CA'  // LINK
-        ]
+        wrappedNative: chainConfig.tokens.wrappedNative,
+        weth: chainConfig.tokens.wrappedNative, // Alias for backward compatibility
+        wbnb: chainConfig.tokens.wrappedNative, // Alias for BNB Chain
+        usdc: chainConfig.tokens.usdc,
+        usdt: chainConfig.tokens.usdt,
+        dai: chainConfig.tokens.dai,
+        ...chainConfig.tokens, // Include all chain-specific tokens
+        watchlist: chainConfig.tokens.watchlist
     },
     
     // Bot configuration
     bot: {
         minProfitThreshold: parseFloat(process.env.MIN_PROFIT_THRESHOLD) || 0.01,
-        maxGasPrice: parseInt(process.env.MAX_GAS_PRICE) || 100,
+        maxGasPrice: parseInt(process.env.MAX_GAS_PRICE) || (chainName === 'bnb' ? 5 : 100), // Lower gas for BNB Chain
         slippageTolerance: parseFloat(process.env.SLIPPAGE_TOLERANCE) || 0.5,
         checkInterval: parseInt(process.env.CHECK_INTERVAL) || 1000,
-        maxTradeSize: parseFloat(process.env.MAX_TRADE_SIZE) || 10,
+        maxTradeSize: parseFloat(process.env.MAX_TRADE_SIZE) || (chainName === 'bnb' ? 10 : 10), // Same for both
         enableMempoolMonitoring: process.env.ENABLE_MEMPOOL_MONITORING === 'true'
     },
     

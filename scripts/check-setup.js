@@ -36,20 +36,37 @@ function check(name, condition, errorMsg, warnMsg = null) {
 }
 
 async function verifySetup() {
+    const chainName = config.chain.name;
+    const chainKey = config.chain.key;
+    const nativeSymbol = config.chain.nativeCurrency.symbol;
+    const isTestnet = config.chain.isTestnet;
+    
+    console.log(`\n🔗 Chain: ${chainName} ${isTestnet ? 'Testnet' : 'Mainnet'}`);
+    console.log('─'.repeat(60));
+    
     // 1. Environment Variables
     console.log('\n📋 Environment Variables');
     console.log('─'.repeat(60));
     
+    // Check chain selection
+    const chainEnv = process.env.CHAIN || 'ethereum';
+    console.log(`   Selected Chain: ${chainEnv}`);
+    
+    // Check RPC URL (chain-specific or generic)
+    const rpcUrl = config.network.rpcUrl;
     check(
-        'ETHEREUM_RPC_URL',
-        !!process.env.ETHEREUM_RPC_URL,
-        'RPC URL not set'
+        'RPC URL',
+        !!rpcUrl,
+        `${chainName} RPC URL not set. Set ${chainKey.toUpperCase()}_RPC_URL or RPC_URL`
     );
     
+    // Check WebSocket URL
+    const wssUrl = config.network.wssUrl;
     check(
-        'ETHEREUM_WSS_URL',
-        !!process.env.ETHEREUM_WSS_URL,
-        'WebSocket URL not set'
+        'WebSocket URL',
+        !!wssUrl,
+        `${chainName} WebSocket URL not set. Set ${chainKey.toUpperCase()}_WSS_URL or WSS_URL`,
+        !wssUrl ? 'WebSocket URL not set, but RPC URL may work' : null
     );
     
     check(
@@ -69,12 +86,12 @@ async function verifySetup() {
     console.log('─'.repeat(60));
     
     try {
-        const provider = new ethers.providers.JsonRpcProvider(config.network.rpcUrl);
+        const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
         const network = await provider.getNetwork();
         check(
             'RPC Connection',
             network.chainId === config.network.chainId,
-            `Connected to wrong network (Chain ID: ${network.chainId})`
+            `Connected to wrong network. Expected Chain ID: ${config.network.chainId}, Got: ${network.chainId}`
         );
         
         const blockNumber = await provider.getBlockNumber();
@@ -84,29 +101,34 @@ async function verifySetup() {
             'Unable to fetch block number'
         );
         console.log(`   Current block: ${blockNumber}`);
+        console.log(`   Chain ID: ${network.chainId}`);
     } catch (error) {
         check('RPC Connection', false, error.message);
     }
     
     // 3. Wallet Status
-    console.log('\n💰 Wallet Status');
+    console.log(`\n💰 Wallet Status`);
     console.log('─'.repeat(60));
     
     try {
-        const provider = new ethers.providers.JsonRpcProvider(config.network.rpcUrl);
+        const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
         const wallet = new ethers.Wallet(config.wallet.privateKey, provider);
         
         const balance = await wallet.getBalance();
-        const balanceETH = parseFloat(ethers.utils.formatEther(balance));
+        const balanceNative = parseFloat(ethers.utils.formatEther(balance));
         
         console.log(`   Address: ${wallet.address}`);
-        console.log(`   Balance: ${balanceETH.toFixed(4)} ETH`);
+        console.log(`   Balance: ${balanceNative.toFixed(4)} ${nativeSymbol}`);
+        
+        // Different minimum balance requirements for different chains
+        const minBalance = chainKey === 'bnb' ? 0.01 : 0.1; // BNB Chain needs less
+        const recommendedBalance = chainKey === 'bnb' ? 0.1 : 0.5; // BNB Chain needs less
         
         check(
             'Wallet Balance',
-            balanceETH >= 0.1,
-            'Insufficient balance for gas fees (< 0.1 ETH)',
-            balanceETH < 0.5 ? 'Low balance, consider adding more ETH' : null
+            balanceNative >= minBalance,
+            `Insufficient balance for gas fees (< ${minBalance} ${nativeSymbol})`,
+            balanceNative < recommendedBalance ? `Low balance, consider adding more ${nativeSymbol}` : null
         );
     } catch (error) {
         check('Wallet Setup', false, error.message);
@@ -176,9 +198,12 @@ async function verifySetup() {
         'Check interval too low (min 100ms)'
     );
     
-    console.log(`   Min Profit: ${config.bot.minProfitThreshold} ETH`);
+    const nativeSymbol = config.chain.nativeCurrency.symbol;
+    console.log(`   Min Profit: ${config.bot.minProfitThreshold} ${nativeSymbol}`);
     console.log(`   Max Gas: ${config.bot.maxGasPrice} gwei`);
     console.log(`   Interval: ${config.bot.checkInterval}ms`);
+    console.log(`   Chain: ${config.chain.name}`);
+    console.log(`   Flashloan Provider: ${config.contracts.flashloanProviderName}`);
     
     // 7. Telegram (Optional)
     console.log('\n📱 Telegram Bot (Optional)');

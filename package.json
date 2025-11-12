@@ -1,7 +1,7 @@
 {
-  "name": "ethereum-mev-arbitrage-bot",
+  "name": "ethereum-bnb-mev-bot",
   "version": "1.0.0",
-  "description": "Advanced Ethereum MEV Bot for Arbitrage, Sandwich Attacks, and Token Sniping",
+  "description": "Advanced Multi-Chain MEV Bot for Arbitrage on Ethereum and BNB Chain. Supports flashloans, DEX arbitrage, and automated trading.",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
@@ -9,17 +9,24 @@
     "test": "jest",
     "compile": "hardhat compile",
     "deploy": "hardhat run scripts/deploy.js",
+    "check-setup": "node scripts/check-setup.js",
     "lint": "eslint src/**/*.js"
   },
   "keywords": [
     "ethereum",
+    "bnb-chain",
+    "binance-smart-chain",
+    "bsc",
     "mev",
     "arbitrage",
     "flashloan",
     "defi",
     "dex",
     "bot",
-    "trading"
+    "trading",
+    "pancakeswap",
+    "uniswap",
+    "multi-chain"
   ],
   "author": "MEV Bot Team",
   "license": "MIT",
